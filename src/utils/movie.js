@@ -6,3 +6,9 @@ export function getListMovies(size, movies) {
   }
   return popularMovies;
 }
+
+//Gerar numero aleatorio com base na lista
+
+export function randomBanner(movies) {
+  return Math.floor(Math.random() * movies.length);
+}

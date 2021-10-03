@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   Container,
@@ -27,6 +28,8 @@ function Home() {
   const [bannerMovie, setBannerMovie] = useState({});
 
   const [loading, setLoading] = useState(true);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     let isActive = true;
@@ -80,7 +83,9 @@ function Home() {
     };
   }, []);
 
-  function navigateDetailsPage(item) {}
+  function navigateDetailsPage(item) {
+    navigation.navigate("Detail", { id: item.id });
+  }
 
   if (loading) {
     return (

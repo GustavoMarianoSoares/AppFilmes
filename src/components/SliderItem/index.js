@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 function SliderItem({ data, navigatePage }) {
   return (
-    <Container activeOpacity={0.5} onPress={() => alert("Teste")}>
+    <Container activeOpacity={0.5} onPress={() => navigatePage(data)}>
       <BannerItem
         source={{
           uri: `https://image.tmdb.org/t/p/original/${data.poster_path}`,

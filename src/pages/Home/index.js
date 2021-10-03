@@ -104,11 +104,11 @@ function Home() {
 
   return (
     <Container>
-      <Header title="React Prime" />
+      <Header title="Filmes" />
 
       <SearchContainer>
         <Input
-          placeholder="Ex vingadores"
+          placeholder="Pesquise o filme que deseja"
           placeholderTextColor="#DDD"
           value={input}
           onChangeText={(text) => setInput(text)}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Modal } from "react-native";
+import { ScrollView, Modal, ActivityIndicator } from "react-native";
 import {
   Container,
   Header,
@@ -31,6 +31,7 @@ function Detail() {
   const [movie, setMovie] = useState({});
   const [openLink, setOpenLink] = useState(false);
   const [favoritedMovie, setFavoritedMovie] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isActive = true;
@@ -56,6 +57,7 @@ function Detail() {
 
     if (isActive) {
       getMovie();
+      setLoading(false);
     }
 
     return () => {
@@ -71,6 +73,14 @@ function Detail() {
       await saveMovie("@primereact", movie);
       setFavoritedMovie(true);
     }
+  }
+
+  if (loading) {
+    return (
+      <Container>
+        <ActivityIndicator size="large" color="#FFF" />
+      </Container>
+    );
   }
 
   return (

@@ -33,6 +33,7 @@ export const Banner = styled.Image`
 `;
 
 export const ButtonLink = styled.TouchableOpacity`
+  flex-direction: row;
   background-color: #e72f29;
   width: 63px;
   height: 63px;
@@ -40,6 +41,20 @@ export const ButtonLink = styled.TouchableOpacity`
   position: absolute;
   top: 300px;
   right: 15px;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+`;
+
+export const ButtonLinkShare = styled.TouchableOpacity`
+  flex-direction: row;
+  background-color: #e72f29;
+  width: 63px;
+  height: 63px;
+  border-radius: 35px;
+  position: absolute;
+  top: 300px;
+  left: 15px;
   justify-content: center;
   align-items: center;
   z-index: 99;

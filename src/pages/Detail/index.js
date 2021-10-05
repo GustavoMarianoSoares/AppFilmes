@@ -11,6 +11,7 @@ import {
   Rate,
   ListGenres,
   Description,
+  ButtonLinkShare,
 } from "./styles";
 
 import { Feather, Ionicons } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ import api, { key } from "../../services/api";
 import Genres from "../../components/Genres";
 import ModalLink from "../../components/ModalLink";
 import { saveMovie, hasMovie, deleteMovie } from "../../utils/storage";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 import Stars from "react-native-stars";
 
@@ -105,6 +107,10 @@ function Detail() {
           uri: `https://image.tmdb.org/t/p/original/${movie.poster_path}`,
         }}
       />
+
+      <ButtonLinkShare>
+        <FontAwesome5 name="share" size={24} color="#FFF" />
+      </ButtonLinkShare>
 
       <ButtonLink onPress={() => setOpenLink(true)}>
         <Feather name="link" size={28} color="#FFF" />

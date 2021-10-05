@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Modal, ActivityIndicator } from "react-native";
+import { ScrollView, Modal, ActivityIndicator, Share } from "react-native";
 import {
   Container,
   Header,
@@ -77,6 +77,27 @@ function Detail() {
     }
   }
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `${movie.title}
+
+Descrição: ${movie?.overview}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   if (loading) {
     return (
       <Container>
@@ -108,7 +129,7 @@ function Detail() {
         }}
       />
 
-      <ButtonLinkShare>
+      <ButtonLinkShare onPress={onShare}>
         <FontAwesome5 name="share" size={24} color="#FFF" />
       </ButtonLinkShare>
 

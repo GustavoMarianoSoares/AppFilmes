@@ -24,6 +24,20 @@ function Routes() {
       }}
     >
       <Drawer.Screen
+        name="LoginDrawer"
+        component={StackRoutes}
+        options={{
+          title: "Login",
+          drawerIcon: ({ focused, size, color }) => (
+            <MaterialCommunityIcons
+              name={focused ? "movie-open" : "movie-outline"}
+              size={size}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
         name="HomeDrawer"
         component={StackRoutes}
         options={{

@@ -23,6 +23,20 @@ export default function Register({navigation}) {
         { text: "OK", onPress: () => navigation.navigate('Home') }
       ]
     );
+        /*export async function saveLog(key, newLog) {
+      let logsStored = await getLogsSave(key);
+    
+      //Se tiver um usuario salvo com mesmo id
+      const hasLog = logsStored.some((item) => item.id === newLog.id);
+      if (hasLog) {
+        return;
+      }
+    
+      logsStored.push(newLog);
+    
+      await AsyncStorage.setItem(key, JSON.stringify(logsStored));
+    }
+    */
   }
 
   const [text, setText] = useState('');

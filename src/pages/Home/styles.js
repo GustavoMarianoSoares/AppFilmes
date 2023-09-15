@@ -45,7 +45,7 @@ export const Title = styled.Text`
 export const BannerButton = styled.TouchableOpacity``;
 
 export const Banner = styled.Image`
-  height: 150px;
+  height: 550px;
   border-radius: 6px;
   margin: 0 14px;
 `;

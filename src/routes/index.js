@@ -26,6 +26,7 @@ function Routes() {
       }}
     >
 
+      {/*
       <Drawer.Screen
         name="Login"
         component={Login}
@@ -36,7 +37,7 @@ function Routes() {
         name="Cadastro"
         component={Cadastro}
         options={{ swipeEnabled: false, drawerItemStyle: { height: 0 }}}
-      />
+      /> */}
       
       <Drawer.Screen
         name="Home"

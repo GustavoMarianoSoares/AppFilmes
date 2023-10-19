@@ -13,6 +13,7 @@ function StackRoutes() {
   return (
     <Stack.Navigator>
 
+      {/*
       <Stack.Screen
         name="Login"
         component={Login}
@@ -27,7 +28,7 @@ function StackRoutes() {
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
 
       <Stack.Screen
         name="Home"

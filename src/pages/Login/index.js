@@ -68,6 +68,7 @@ export default function Login({navigation}) {
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>
         <Image
+          style={{width: 350, height: 210}}
           source={require('../../assets/mycine.png')}
         />  
       </View>
@@ -119,12 +120,13 @@ const styles = StyleSheet.create({
     flex:1,
     alignItems:'center',
     justifyContent:'center',
-    backgroundColor: '#191919'
+    backgroundColor: '#191a30'
   },
   containerLogo:{
     flex:1,
     justifyContent:'center',
-    paddingTop:50
+    paddingTop:50,
+    marginBottom: 70,
   },
   container:{
     flex:1,
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     padding:12
   },
   btnSubmit:{
-    backgroundColor:'#35AAFF',
+    backgroundColor:'#e72f49',
     width:'90%',
     height:45,
     alignItems:'center',
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius:10
   },
   btnDisablade:{
-    backgroundColor:'#35AAFF',
+    backgroundColor:'#e72f49',
     width:'90%',
     height:45,
     alignItems:'center',
@@ -168,7 +170,8 @@ const styles = StyleSheet.create({
   },
   RegisterText:{
     color:'#fff',
-    fontSize: 15
+    fontSize: 15,
+    marginTop: 30
   }
 
 });

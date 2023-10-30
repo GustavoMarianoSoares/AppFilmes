@@ -25,20 +25,18 @@ function Routes() {
         drawerInactiveTintColor: "#FFF",
       }}
     >
-
-      {/*
       <Drawer.Screen
         name="Login"
         component={Login}
-        options={{ swipeEnabled: false, drawerItemStyle: { height: 0 }}}
+        options={{ swipeEnabled: false, drawerItemStyle: { height: 0 } }}
       />
 
       <Drawer.Screen
         name="Cadastro"
         component={Cadastro}
-        options={{ swipeEnabled: false, drawerItemStyle: { height: 0 }}}
-      /> */}
-      
+        options={{ swipeEnabled: false, drawerItemStyle: { height: 0 } }}
+      />
+
       <Drawer.Screen
         name="Home"
         component={StackRoutes}

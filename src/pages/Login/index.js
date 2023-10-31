@@ -86,6 +86,7 @@ export default function Login({navigation}) {
         });
     } else {
       Alert.alert("ENTROU", "Entrou no sistema com sucesso. 🌟");
+      navigation.navigate('Home')
     }
   }
 

@@ -13,34 +13,91 @@ import {
   Alert
 } from 'react-native';
 
+import auth from '@react-native-firebase/auth';
 
 export default function Login({navigation}) {
 
-  const [text, setText] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const login = () =>{
-    Alert.alert(
-      "Logado com sucesso",
-      "Iremos te redirecionar para a tela inicial do aplicativo",
-      [
-        { text: "OK", onPress: () => navigation.navigate('Home') }
-      ]
-    );
-    /*export async function saveLog(key, newLog) {
-      let logsStored = await getLogsSave(key);
-    
-      //Se tiver um usuario salvo com mesmo id
-      const hasLog = logsStored.some((item) => item.id === newLog.id);
-      if (hasLog) {
-        return;
-      }
-    
-      logsStored.push(newLog);
-    
-      await AsyncStorage.setItem(key, JSON.stringify(logsStored));
+  function signInValidationAuth(error) {
+    if (error === "auth/wrong-password") {
+      Alert.alert(
+        "SENHA",
+        "Senha errada, tente novamente ou clique em esqueci a senha para redefini-la."
+      );
     }
-    */
+
+    if (error === "auth/user-not-found") {
+      Alert.alert(
+        "E-MAIL",
+        "E-mail não encontrado, verifique se o e-mail está correto e tente novamente."
+      );
+    }
+
+    if (error === "auth/too-many-requests") {
+      Alert.alert(
+        "MUITAS TENTATIVAS",
+        "Foram registradas muitas tentativas ao entrar nesta conta, tente novamente mais tarde."
+      );
+    }
+
+    if (error === "auth/invalid-email") {
+      Alert.alert(
+        "E-MAIL MAL INFORMADO",
+        "E-mail mal informado, verifique se o e-mail está correto e com todos os caracteres como: @, .com e etc..."
+      );
+    }
+
+    if (error === "auth/network-request-failed") {
+      Alert.alert(
+        "CONECTE-SE",
+        "Verifique se você está conectado a internet e tente novamente."
+      );
+    }
+  }
+
+  function signInValidation() {
+    if (email == "" || password == "") {
+      Alert.alert(
+        "PREENCHA TODOS OS CAMPOS",
+        "Para entrar no sistema informe todos os campos acima."
+      );
+    } else {
+      handleSignIn();
+    }
+  }
+
+  function checkEmailVerified() {
+    if (auth().currentUser.emailVerified == false) {
+      auth()
+        .currentUser.sendEmailVerification()
+        .then(() => {
+          Alert.alert(
+            "VERIFIQUE SEU E-MAIL",
+            "Enviamos novamente um e-mail de verificação para que possa entrar no sistema."
+          );
+        })
+        .catch(() => {
+          Alert.alert(
+            "AGUARDE",
+            "Aguarde em até 1 minuto para que possamos reenviar o e-mail de verificação."
+          );
+        });
+    } else {
+      Alert.alert("ENTROU", "Entrou no sistema com sucesso. 🌟");
+    }
+  }
+
+  function handleSignIn() {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        checkEmailVerified();
+      })
+      .catch((error) => {
+        signInValidationAuth(error.code);
+      });
   }
 
   const [offset] = useState(new Animated.ValueXY({x: 0, y: 90}));
@@ -61,8 +118,6 @@ export default function Login({navigation}) {
 
   }, []);
 
-
-    
 
   return (
     <KeyboardAvoidingView style={styles.background}>
@@ -87,26 +142,26 @@ export default function Login({navigation}) {
         style ={styles.input}
         placeholder='Email'
         autoCorrect={false}
-        onChangeText={newText => setText(newText)}
-        defaultValue={text}
+        onChangeText={newEmail => setEmail(newEmail)}
+        defaultValue={email}
         />
 
         <TextInput 
         style ={styles.input}
         placeholder='Senha'
         autoCorrect={false}
-        onChangeText={newSenha => setSenha(newSenha)}
-        defaultValue={senha}
+        onChangeText={newPassword => setPassword(newPassword)}
+        defaultValue={password}
         />
 
         <TouchableOpacity 
-          disabled = { text.length > 8 && senha.length > 8 ? false : true }
-          style={text.length > 8 && senha.length > 8 ? styles.btnSubmit : styles.btnDisablade} 
-          onPress={() => login()}>
+          disabled = { email.length > 8 && password.length > 8 ? false : true }
+          style={email.length > 8 && password.length > 8 ? styles.btnSubmit : styles.btnDisablade} 
+          onPress={signInValidation}>
           <Text style={styles.submitText}>Acessar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnRegister} onPress= { () => navigation.navigate('Cadastro')}>
+        <TouchableOpacity style={styles.btnRegister} onPress= {() => navigation.navigate('Cadastro')}>
           <Text style={styles.RegisterText}>Cadastre-se</Text>
         </TouchableOpacity>
 

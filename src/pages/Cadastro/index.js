@@ -12,36 +12,78 @@ import {
   Alert
 } from 'react-native';
 
+import auth from '@react-native-firebase/auth';
+
 
 export default function Register({navigation}) {
-
-  const register = () =>{
-    Alert.alert(
-      "Conta criada com sucesso",
-      "Iremos te redirecionar para a tela inicial do aplicativo",
-      [
-        { text: "OK", onPress: () => navigation.navigate('Home') }
-      ]
-    );
-        /*export async function saveLog(key, newLog) {
-      let logsStored = await getLogsSave(key);
-    
-      //Se tiver um usuario salvo com mesmo id
-      const hasLog = logsStored.some((item) => item.id === newLog.id);
-      if (hasLog) {
-        return;
-      }
-    
-      logsStored.push(newLog);
-    
-      await AsyncStorage.setItem(key, JSON.stringify(logsStored));
-    }
-    */
-  }
 
   const [text, setText] = useState('');
   const [senha, setSenha] = useState('');
   const [confSenha, setConfSenha] = useState('');
+
+  function registerValidation() {
+    if (text == "" || senha == "" || confSenha == "") {
+      Alert.alert(
+        "PREENCHA TODOS OS CAMPOS",
+        "Para se registrar no sistema informe todos os campos acima."
+      );
+    } else if (confSenha != senha) {
+      Alert.alert(
+        "SENHAS DIFERENTES",
+        "As senhas digitadas não correspondem, verifique e tente novamente."
+      );
+    } else {
+      handleNewAccount();
+    }
+  }
+
+  function handleNewAccount() {
+    auth()
+      .createUserWithEmailAndPassword(text, senha)
+      .then(() => {
+        auth().currentUser.sendEmailVerification();
+        auth().currentUser.updateProfile({
+        });
+        Alert.alert(
+          "CADASTRADO",
+          "Usuário cadastrado no sistema com sucesso, enviamos um e-mail para que você verifique-o somente assim poderá entrar no sistema."
+        );
+        navigation.goBack();
+      })
+      .catch((error) => {
+        registerValidationAuth(error.code);
+      });
+  }
+
+  function registerValidationAuth(error) {
+    if (error === "auth/invalid-email") {
+      Alert.alert(
+        "E-MAIL MAL INFORMADO",
+        "E-mail mal informado, verifique se o e-mail está correto e com todos os caracteres como: @, .com e etc..."
+      );
+    }
+
+    if (error === "auth/weak-password") {
+      Alert.alert(
+        "SENHA FRACA",
+        "Crie uma senha com pelo menos 6 caracteres para se cadastrar."
+      );
+    }
+
+    if (error === "auth/email-already-in-use") {
+      Alert.alert(
+        "E-MAIL JÁ CADASTRADO",
+        "Este endereço de e-mail já está cadastrado em outra conta."
+      );
+    }
+
+    if (error === "auth/network-request-failed") {
+      Alert.alert(
+        "CONECTE-SE",
+        "Verifique se você está conectado a internet e tente novamente."
+      );
+    }
+  }
 
   return (
     <KeyboardAvoidingView style={styles.background}>
@@ -84,7 +126,7 @@ export default function Register({navigation}) {
         <TouchableOpacity 
           disabled = { text.length > 8 && senha.length > 8 && confSenha.length > 8 && senha == confSenha ? false : true }
           style={text.length > 8 && senha.length > 8 && confSenha.length > 8 && senha == confSenha ? styles.btnSubmit : styles.btnDisablade}
-          onPress={() => register()} >
+          onPress={registerValidation}>
           <Text style={styles.submitText}>Registrar-se</Text>
         </TouchableOpacity>
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665422298678",
+    "project_id": "appfil-7f034",
+    "storage_bucket": "appfil-7f034.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665422298678:android:553cf3e78552a7f663e297",
+        "android_client_info": {
+          "package_name": "com.gustavomariano.AppFilmes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn-B9Ae9Wp88ydnasV4zM7fajixlOIFSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

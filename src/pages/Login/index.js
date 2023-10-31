@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { 
+import React, { useState, useEffect } from "react";
+import {
   ScrollView,
   StyleSheet,
   Text,
@@ -10,21 +10,39 @@ import {
   TouchableOpacity,
   Image,
   Animated,
-  Alert
-} from 'react-native';
+  Alert,
+} from "react-native";
 
-import auth from '@react-native-firebase/auth';
+import Checkbox from "expo-checkbox";
 
-export default function Login({navigation}) {
+import auth from "@react-native-firebase/auth";
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isChecked, setChecked] = useState(false);
+
+  function changePasswordSecure() {
+    if (isChecked) {
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
+  }
 
   function signInValidationAuth(error) {
+    console.log(error);
     if (error === "auth/wrong-password") {
       Alert.alert(
         "SENHA",
-        "Senha errada, tente novamente ou clique em esqueci a senha para redefini-la."
+        "Senha errada, tente novamente."
+      );
+    }
+
+    if (error === "auth/invalid-login") {
+      Alert.alert(
+        "Login Invalido",
+        "Email ou Senha errados, tente novamente."
       );
     }
 
@@ -86,7 +104,7 @@ export default function Login({navigation}) {
         });
     } else {
       Alert.alert("ENTROU", "Entrou no sistema com sucesso. 🌟");
-      navigation.navigate('Home')
+      navigation.navigate("Home");
     }
   }
 
@@ -101,133 +119,155 @@ export default function Login({navigation}) {
       });
   }
 
-  const [offset] = useState(new Animated.ValueXY({x: 0, y: 90}));
+  const [offset] = useState(new Animated.ValueXY({ x: 0, y: 90 }));
   const [opacity] = useState(new Animated.Value(0));
 
-  useEffect(()=> {
+  useEffect(() => {
     Animated.parallel([
       Animated.spring(offset.y, {
         toValue: 0,
         speed: 4,
-        bounciness: 30
+        bounciness: 30,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         duration: 200,
-      })
+      }),
     ]);
-
   }, []);
-
 
   return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerLogo}>
         <Image
-          style={{width: 350, height: 210}}
-          source={require('../../assets/mycine.png')}
-        />  
+          style={{ width: 350, height: 210 }}
+          source={require("../../assets/mycine.png")}
+        />
       </View>
 
-      <Animated.View 
+      <Animated.View
         style={[
           styles.container,
           {
-            Transform:[
-              { translateY: offset.y }
-            ]
-          }
+            Transform: [{ translateY: offset.y }],
+          },
         ]}
       >
-        <TextInput 
-        style ={styles.input}
-        placeholder='Email'
-        autoCorrect={false}
-        onChangeText={newEmail => setEmail(newEmail)}
-        defaultValue={email}
+        <TextInput
+          keyboardType="email-address"
+          autoCapitalize="none"
+          style={styles.input}
+          placeholder="Email"
+          autoCorrect={false}
+          onChangeText={(newEmail) => setEmail(newEmail)}
+          defaultValue={email}
         />
 
-        <TextInput 
-        style ={styles.input}
-        placeholder='Senha'
-        autoCorrect={false}
-        onChangeText={newPassword => setPassword(newPassword)}
-        defaultValue={password}
+        <TextInput
+          secureTextEntry={!isChecked}
+          style={styles.input}
+          placeholder="Senha"
+          autoCorrect={false}
+          onChangeText={(newPassword) => setPassword(newPassword)}
+          defaultValue={password}
         />
 
-        <TouchableOpacity 
-          disabled = { email.length > 8 && password.length > 8 ? false : true }
-          style={email.length > 8 && password.length > 8 ? styles.btnSubmit : styles.btnDisablade} 
-          onPress={signInValidation}>
+        <TouchableOpacity
+          onPress={changePasswordSecure}
+          style={{
+            flexDirection: "row",
+            alignSelf: "flex-start",
+            marginBottom: 30,
+            marginLeft: 20,
+          }}
+        >
+          <Checkbox
+            value={isChecked}
+            color={isChecked ? "#339FFF" : "#797979"}
+          />
+
+          <Text style={{ color: "#fff", marginLeft: 5 }}>Mostrar senha</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          disabled={email.length > 8 && password.length > 8 ? false : true}
+          style={
+            email.length > 8 && password.length > 8
+              ? styles.btnSubmit
+              : styles.btnDisablade
+          }
+          onPress={signInValidation}
+        >
           <Text style={styles.submitText}>Acessar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnRegister} onPress= {() => navigation.navigate('Cadastro')}>
+        <TouchableOpacity
+          style={styles.btnRegister}
+          onPress={() => navigation.navigate("Cadastro")}
+        >
           <Text style={styles.RegisterText}>Cadastre-se</Text>
         </TouchableOpacity>
-
-      </Animated.View>    
+      </Animated.View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  background:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor: '#191a30'
+  background: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#191a30",
   },
-  containerLogo:{
-    flex:1,
-    justifyContent:'center',
-    paddingTop:50,
+  containerLogo: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 50,
     marginBottom: 70,
   },
-  container:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
-    width:'90%',
-    paddingBottom:260
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "90%",
+    paddingBottom: 260,
   },
-  input:{
-    backgroundColor:'#fff',
-    width:'90%',
-    marginBottom:15,
-    color:'#222',
+  input: {
+    backgroundColor: "#fff",
+    width: "90%",
+    marginBottom: 15,
+    color: "#222",
     fontSize: 17,
     borderRadius: 10,
-    padding:12
+    padding: 12,
   },
-  btnSubmit:{
-    backgroundColor:'#e72f49',
-    width:'90%',
-    height:45,
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:10
+  btnSubmit: {
+    backgroundColor: "#e72f49",
+    width: "90%",
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
   },
-  btnDisablade:{
-    backgroundColor:'#e72f49',
-    width:'90%',
-    height:45,
-    alignItems:'center',
-    justifyContent:'center',
-    borderRadius:10,
-    opacity: 0.5
+  btnDisablade: {
+    backgroundColor: "#e72f49",
+    width: "90%",
+    height: 45,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    opacity: 0.5,
   },
-  submitText:{
-    color:'#fff',
-    fontSize: 18
+  submitText: {
+    color: "#fff",
+    fontSize: 18,
   },
-  btnRegister:{
+  btnRegister: {
     marginTop: 10,
   },
-  RegisterText:{
-    color:'#fff',
+  RegisterText: {
+    color: "#fff",
     fontSize: 15,
-    marginTop: 30
-  }
-
+    marginTop: 30,
+  },
 });
